@@ -13,7 +13,11 @@ To enable the plugin, include it in the *build* section of your
         <groupId>com.abiquo.maven</groupId>
         <artifactId>maven-redis-plugin</artifactId>
         <executions>
-            <execution><goals><goal>clean</goal></goals></execution>
+            <execution>
+                <goals>
+                    <goal>clean</goal>
+                </goals>
+            </execution>
         </executions>
     </plugin>
     
