@@ -69,6 +69,10 @@ public class CleanMojo extends AbstractRedisMojo
                     "Redis database seems to be down. Database clean will not be performed");
             }
         }
+        else
+        {
+            getLog().info("Skipping execution");
+        }
     }
 
 }
