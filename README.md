@@ -25,8 +25,9 @@ will assume that it is at `localhost:6379`. If you need to change it, you can
 configure the plugin as follows:
 
     <configuration>
-        <host>The Redis host</host>
-        <port>The Redis listening port</port>
+        <skip>true|false</skip> (Optional)
+        <host>The Redis host</host> (Optional)
+        <port>The Redis listening port</port> (Optional)
     </configuration>
 
 License
