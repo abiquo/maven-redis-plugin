@@ -24,25 +24,96 @@ package com.abiquo.maven.plugins.redis;
 
 import java.io.IOException;
 
+import redis.clients.jedis.Jedis;
+
 /**
- * Connector to perform operations against the Redis database.
+ * Redis Connector to perform operations against the Redis database.
  * 
  * @author Ignasi Barrera
  */
-public interface Redis
+public class Redis
 {
+    /** The target Redis connector. */
+    private Jedis jedis;
+
+    /**
+     * Creates a new {@link Redis} to the given host and port.
+     * 
+     * @param host The host where the Redis database is running.
+     * @param port The port where the Redis database is listening.
+     */
+    public Redis(String host, int port)
+    {
+        super();
+        jedis = new Jedis(host, port);
+    }
+
     /**
      * Pings the Redis database.
      * 
      * @return Boolean indicating if the Redis database is up.
      */
-    public boolean ping();
+    public boolean ping()
+    {
+        try
+        {
+            connect();
+            return jedis.ping().equalsIgnoreCase("pong");
+        }
+        catch (IOException ex)
+        {
+            return false;
+        }
+        finally
+        {
+            disconnect();
+        }
+    }
 
     /**
      * Cleans the selected Redis database.
      * 
      * @throws IOException If the clean operation fails.
      */
-    public void flushDB() throws IOException;
+    public void flushDB() throws IOException
+    {
+        try
+        {
+            connect();
+            jedis.flushDB();
+        }
+        finally
+        {
+            disconnect();
+        }
+    }
+
+    /**
+     * Connects to the Redis database.
+     * 
+     * @throws IOException
+     */
+    private void connect() throws IOException
+    {
+        jedis.connect();
+    }
+
+    /**
+     * Disconnects from the Redis datbase.
+     */
+    private void disconnect()
+    {
+        if (jedis.isConnected())
+        {
+            try
+            {
+                jedis.disconnect();
+            }
+            catch (IOException ex)
+            {
+                // Ignore disconnection errors
+            }
+        }
+    }
 
 }

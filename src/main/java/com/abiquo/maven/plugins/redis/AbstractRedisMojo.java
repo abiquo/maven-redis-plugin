@@ -63,6 +63,6 @@ public abstract class AbstractRedisMojo extends AbstractMojo
     protected void initialize()
     {
         getLog().info("Initializing Redis connector to " + host + ":" + port);
-        redis = RedisConnector.newInstance(host, port.intValue());
+        redis = new Redis(host, port.intValue());
     }
 }

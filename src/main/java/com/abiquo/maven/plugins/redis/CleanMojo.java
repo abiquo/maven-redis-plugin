@@ -50,15 +50,23 @@ public class CleanMojo extends AbstractRedisMojo
         {
             initialize();
 
-            try
+            if (redis.ping())
             {
-                getLog().info("Cleaning the selected Redis database...");
-                redis.flushDB();
+                try
+                {
+                    getLog().info("Cleaning the selected Redis database");
+                    redis.flushDB();
+                }
+                catch (IOException ex)
+                {
+                    throw new MojoExecutionException("Could not clean the selected database: "
+                        + ex.getMessage(), ex);
+                }
             }
-            catch (IOException ex)
+            else
             {
-                throw new MojoExecutionException("Could not clean the selected database: "
-                    + ex.getMessage(), ex);
+                getLog().warn(
+                    "Redis database seems to be down. Database clean will not be performed");
             }
         }
     }
